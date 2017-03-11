@@ -1,0 +1,10 @@
+#map-container {
+
+}
+
+#map {
+    width: 998px;
+    height: 598px;
+    margin: 25px auto;
+    border: 1px solid #000;
+}

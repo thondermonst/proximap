@@ -1,0 +1,21 @@
+<?php
+
+namespace app\modules\map\models;
+
+use yii\base\Model;
+
+class AbstractModel extends Model
+{
+    /**
+     * @var string
+     */
+    public $apiKey;
+
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+
+        $this->apiKey = 'AIzaSyAYJihDK3z_usQdd3IkFJeCZ1AomlwsYlI';
+    }
+}
