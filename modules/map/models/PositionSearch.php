@@ -4,12 +4,9 @@ namespace app\modules\map\models;
 
 class PositionSearch extends AbstractModel
 {
-    public $entry;
 
-    public function find($entry) {
-        $this->entry = $entry;
-
-        $address = str_replace(' ', '+', $this->entry);
+    public function findByAddress($entry) {
+        $address = str_replace(' ', '+', $entry);
 
         $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . $address . '&key=' . $this->apiKey;
 
@@ -28,5 +25,18 @@ class PositionSearch extends AbstractModel
         }
 
         return $position;
+    }
+    
+    public function findByCoordinates($latitude, $longitude) {
+        $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latitude . ',' . $longitude . '&key=' . $this->apiKey;
+        
+        $json = file_get_contents($apiUrl);
+        
+        $obj = json_decode($json);
+        
+        print '<pre>';
+        var_dump($obj->results);
+        print '</pre>';
+        die();
     }
 }

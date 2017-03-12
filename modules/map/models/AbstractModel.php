@@ -16,6 +16,6 @@ class AbstractModel extends Model
     {
         parent::__construct($config);
 
-        $this->apiKey = 'AIzaSyAYJihDK3z_usQdd3IkFJeCZ1AomlwsYlI';
+        $this->apiKey = '';
     }
 }

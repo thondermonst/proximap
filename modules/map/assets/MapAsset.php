@@ -11,6 +11,7 @@ class MapAsset extends AssetBundle
         'css/map.css',
     ];
     public $js = [
+        'js/map.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

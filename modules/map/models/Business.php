@@ -23,4 +23,9 @@ class Business extends AbstractModel
      * @var float
      */
     public $latitude;
+    
+    /**
+     * @var string
+     */
+    public $id;
 }

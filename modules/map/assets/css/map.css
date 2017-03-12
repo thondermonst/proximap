@@ -2,9 +2,39 @@
 
 }
 
+#search {
+
+}
+
+.search-button {
+    margin: 25px 5px 0;
+}
+
+.search-button-element {
+    position: relative;
+    
+}
+
 #map {
-    width: 998px;
-    height: 598px;
-    margin: 25px auto;
-    border: 1px solid #000;
+    margin-top: 25px;
+}
+
+#businesses {
+    
+}
+
+.business {
+    border: #aaa 1px solid;
+    height: 85px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+#business-details {
+    min-height: 250px;
 }

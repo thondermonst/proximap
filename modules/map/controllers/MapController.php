@@ -24,8 +24,6 @@ class MapController extends Controller
      * @return string
      */
     protected function view() {
-        $map = new Map();
-
         $types = $this->getTypes();
 
         $radii = $this->getRadii();
@@ -33,26 +31,18 @@ class MapController extends Controller
         if(Yii::$app->request->post() && null !== yii::$app->request->post('Map')) {
             $mapPost = yii::$app->request->post('Map');
 
-            //Set map query
-            $map->setQuery($mapPost['search']);
+            $map = $this->createMap($mapPost);
 
             //Set position
             $positionSearch = new PositionSearch();
-            $position = $positionSearch->find($mapPost['search']);
+            $position = $positionSearch->findByAddress($mapPost['search']);
 
             //Look for businesses
             $businessSearch = new BusinessSearch();
             $businesses = $businessSearch->find($position, $mapPost['type'], $mapPost['radius']);
-
-            var_dump($mapPost);
-            print '<pre>';
-            var_dump($businesses);
-            print '</pre>';
-            die();
-
-
-            $map->type = $mapPost['type'];
-            $map->radius = $mapPost['radius'];
+        } else {
+            $map = new Map();
+            $map->setDefault();
         }
 
         return $this->render('view',
@@ -61,6 +51,7 @@ class MapController extends Controller
                 'map' => $map,
                 'types' => $types,
                 'radii' => $radii,
+                'businesses' => isset($businesses) ? $businesses : null,
             ]
         );
     }
@@ -71,5 +62,16 @@ class MapController extends Controller
 
     protected function getRadii() {
         return [1 => 1, 5 => 5, 10 => 10];
+    }
+    
+    protected function createMap($params) {
+        $map = new Map();
+        
+        $map->search = $params['search'];
+        $map->type = $params['type'];
+        $map->radius = $params['radius'];
+        $map->setQueryAndSource();
+        
+        return $map;
     }
 }

@@ -6,7 +6,7 @@ class Map extends AbstractModel
     /**
      * @var string
      */
-    public $baseUrl;
+    public $baseUrl = 'https://www.google.com/maps/embed/v1/place?key=';
 
     /**
      * @var string
@@ -27,32 +27,38 @@ class Map extends AbstractModel
      * @var string
      */
     public $query;
+    
+    /**
+     * @var string
+     */
+    public $source;
+        
+    /**
+     * @var integer
+     */
+    public $height = 596;
 
     /**
      * @var integer
      */
-    public $height;
-
-    /**
-     * @var integer
-     */
-    public $width;
-
-    /**
-     * Map constructor.
-     * @param array $config
-     */
-    public function __construct(array $config = [])
+    public $width = 996;
+    
+    public function setDefault()
     {
-        parent::__construct($config);
-
-        $this->baseUrl = 'https://www.google.com/maps/embed/v1/place?key=';
-        $this->query = '&q=Centraal+Station+Antwerpen';
-        $this->width = 996;
-        $this->height = 596;
+        $this->search = 'Bredabaan 780A Merksem';
+        $this->setQueryAndSource();
+    }
+    
+    public function setQueryAndSource() {
+        $this->setQuery();
+        $this->setSource();
     }
 
-    public function setQuery($search) {
-        $this->query = '&q=' . str_replace(' ', '+', $search);
+    public function setQuery() {
+        $this->query = '&q=' . str_replace(' ', '+', $this->search);
+    }
+    
+    public function setSource() {
+        $this->source = $this->baseUrl . $this->apiKey . $this->query;
     }
 }
