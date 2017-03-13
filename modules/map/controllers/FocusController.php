@@ -17,13 +17,16 @@ class FocusController extends Controller
     }
     
     protected function view() {
-        $map = new Map();
+
         $id = yii::$app->getRequest()->getQueryParam('id');
         
         $businessDetailsSearch =  new BusinessDetailsSearch();
         $businessDetails = $businessDetailsSearch->findById($id);
-        $map->search = $businessDetails->address;
-        $map->setQueryAndSource();
+
+        $session = Yii::$app->getSession();
+        $origin = $session['origin'];
+        $mode = $session['mode'];
+        $map = $this->createMap($origin, $businessDetails, $mode);
         
         return $this->render('view', 
             [
@@ -32,5 +35,11 @@ class FocusController extends Controller
                 'businessDetails' => $businessDetails,
             ]
         );
+    }
+
+    protected function createMap($origin, $destination, $mode) {
+        $map = new Map();
+        $map->setQueryAndSourceForDirections($origin, $destination, $mode);
+
     }
 }

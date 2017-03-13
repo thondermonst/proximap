@@ -6,7 +6,12 @@ class Map extends AbstractModel
     /**
      * @var string
      */
-    public $baseUrl = 'https://www.google.com/maps/embed/v1/place?key=';
+    public $placeUrl = 'https://www.google.com/maps/embed/v1/place?key=';
+
+    /**
+     * @var string
+     */
+    public $directionsUrl = 'https://www.google.com/maps/embed/v1/directions?key=';
 
     /**
      * @var string
@@ -17,6 +22,11 @@ class Map extends AbstractModel
      * @var string
      */
     public $type;
+
+    /**
+     * @var string
+     */
+    public $mode;
 
     /**
      * @var integer
@@ -42,23 +52,36 @@ class Map extends AbstractModel
      * @var integer
      */
     public $width = 996;
-    
-    public function setDefault()
+
+    public function setDefaultForPlace()
     {
         $this->search = 'Bredabaan 780A Merksem';
         $this->setQueryAndSource();
     }
-    
-    public function setQueryAndSource() {
-        $this->setQuery();
-        $this->setSource();
+
+    public function setQueryAndSourceForPlace() {
+        $this->setQueryForPlace();
+        $this->setSourceForPlace();
     }
 
-    public function setQuery() {
+    public function setQueryForPlace() {
         $this->query = '&q=' . str_replace(' ', '+', $this->search);
     }
-    
-    public function setSource() {
-        $this->source = $this->baseUrl . $this->apiKey . $this->query;
+
+    public function setSourceForPlace() {
+        $this->source = $this->placeUrl . $this->apiKey . $this->query;
+    }
+
+    public function setQueryAndSourceForDirections($origin, $destination, $mode) {
+        $this->setQueryForDirections($origin, $destination, $mode);
+        $this->setSourceForDirections();
+    }
+
+    public function setQueryForDirections($origin, $destination, $mode) {
+        $this->query = '&origin=' . str_replace(' ', '+', $origin->address) . '&destination=' . str_replace(' ', '+', $destination->address) . '&mode=' . $mode;
+    }
+
+    public function setSourceForDirections() {
+        $this->source = $this->directionsUrl . $this->apiKey . $this->query;
     }
 }

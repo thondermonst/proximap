@@ -8,6 +8,12 @@ use yii\helpers\Url;
 $this->title = $title;
 ?>
 <div id="map-container">
+    <div id="back">
+        <a href="<?= Url::previous();?>">
+            <button class="btn btn-primary">
+                Back to overview
+            </button></a>
+    </div>
     <h1><?= \yii\helpers\Html::encode($title); ?></h1>
     <div id="map">
         <iframe
@@ -21,7 +27,7 @@ $this->title = $title;
         <h2>Business Details</h2>
         <div id="address" class="col-md-8">
             <h3>Address</h3>
-            <strong>Address:</strong> <?= $businessDetails->address; ?>
+            <?= $businessDetails->address; ?>
         </div>
         <div id="rating" class="col-md-4">
             <h3>Rating</h3>

@@ -2,17 +2,17 @@
 
 namespace app\modules\map\models;
 
-use app\modules\map\models\Business;
-
 class BusinessSearch extends AbstractModel
 {
 
     /**
      * @param Position $position
      * @param string $type
+     * @param string $mode
      * @param integer $radiusInKm
+     * @return array
      */
-    public function find($position, $type, $radiusInKm) {
+    public function find($position, $type, $mode, $radiusInKm) {
         switch ($type) {
             case 'eat':
                 $type = 'restaurant';
@@ -25,23 +25,55 @@ class BusinessSearch extends AbstractModel
                 break;
         }
         $radius = $radiusInKm * 1000;
-        $apiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' . $position->latitude . ',' . $position->longitude . /*'&radius=' . $radius . */'&rankby=distance&type=' . $type . '&key=' . $this->apiKey;
-        
+        $apiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' . $position->latitude . ',' . $position->longitude . '&radius=' . $radius . '&type=' . $type . '&key=' . $this->apiKey;
+
         $json = file_get_contents($apiUrl);
 
         $obj = json_decode($json);
-        
+
         $businesses = [];
         foreach ($obj->results as $result) {
             $business = new Business();
+            $business->id = $result->place_id;
             $business->name = $result->name;
-            $business->address = $result->vicinity;
+
+            $positionSearch = new PositionSearch();
+            $businessPosition = $positionSearch->findByCoordinates($result->geometry->location->lat, $result->geometry->location->lng);
+
+            $business->address = $businessPosition->address;
             $business->latitude = $result->geometry->location->lat;
             $business->longitude = $result->geometry->location->lng;
-            $business->id = $result->place_id;
+            $business->distanceFromOrigin = $this->setDistanceFromOrigin($position, $business, $mode);
             $businesses[] = $business;
         }
-        
+
+        usort($businesses, array($this, "cmp"));
+
         return $businesses;
+    }
+
+    /**
+     * @param Position $origin
+     * @param Business $business
+     * @param string $mode
+     * @return integer
+     */
+    protected function setDistanceFromOrigin($origin, $business, $mode) {
+        $apiUrl = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $origin->latitude . ',' . $origin->longitude . '&destinations=' . $business->latitude . ',' . $business->longitude . '&mode=' . $mode .  '&key=' . $this->apiKey;
+
+        $json = file_get_contents($apiUrl);
+
+        $obj = json_decode($json);
+
+        return $obj->rows[0]->elements[0]->distance->value;
+    }
+
+    /**
+     * @param Business $a
+     * @param Business $b
+     * @return bool
+     */
+    protected function cmp($a, $b) {
+        return $a->distanceFromOrigin > $b->distanceFromOrigin;
     }
 }

@@ -34,9 +34,16 @@ class PositionSearch extends AbstractModel
         
         $obj = json_decode($json);
         
-        print '<pre>';
-        var_dump($obj->results);
-        print '</pre>';
-        die();
+        foreach($obj->results as $result) {
+            $position = new Position();
+
+            $position->address = $result->formatted_address;
+            $position->latitude = $latitude;
+            $position->longitude = $longitude;
+
+            break;
+        }
+
+        return $position;
     }
 }

@@ -13,10 +13,13 @@ class BusinessDetailsSearch extends AbstractModel
         $json = file_get_contents($apiUrl);
         
         $obj = json_decode($json);
-        
         $businessDetails = new BusinessDetails();
         $businessDetails->name = $obj->result->name;
-        $businessDetails->address = $obj->result->formatted_address;
+
+        $positionSearch = new PositionSearch();
+        $businessPosition = $positionSearch->findByCoordinates($obj->result->geometry->location->lat, $obj->result->geometry->location->lng);
+
+        $businessDetails->address = $businessPosition->address;
         $businessDetails->opening_hours = isset($obj->result->opening_hours->weekday_text) ? $obj->result->opening_hours->weekday_text : null;
         $businessDetails->url = $obj->result->url;
         $businessDetails->phone = isset($obj->result->international_phone_number) ? $obj->result->international_phone_number : null;

@@ -28,4 +28,9 @@ class Business extends AbstractModel
      * @var string
      */
     public $id;
+
+    /**
+     * @var float
+     */
+    public $distanceFromOrigin;
 }
