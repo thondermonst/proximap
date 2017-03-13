@@ -56,7 +56,7 @@ class Map extends AbstractModel
     public function setDefaultForPlace()
     {
         $this->search = 'Bredabaan 780A Merksem';
-        $this->setQueryAndSource();
+        $this->setQueryAndSourceForPlace();
     }
 
     public function setQueryAndSourceForPlace() {

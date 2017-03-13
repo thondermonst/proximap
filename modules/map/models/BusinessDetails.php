@@ -32,6 +32,11 @@ class BusinessDetails extends AbstractModel
     /**
      * @var string
      */
+    public $website_url;
+    
+    /**
+     * @var string
+     */
     public $website;
     
     /**
@@ -43,5 +48,10 @@ class BusinessDetails extends AbstractModel
      * @var float
      */
     public $rating;
+    
+    /**
+     * @var array 
+     */
+    public $reviews;
 }
 

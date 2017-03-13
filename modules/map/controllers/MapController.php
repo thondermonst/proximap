@@ -7,7 +7,6 @@ use app\modules\map\models\Map;
 use app\modules\map\models\PositionSearch;
 use yii\web\Controller;
 use Yii;
-use yii\web\Session;
 
 class MapController extends Controller
 {
@@ -90,7 +89,7 @@ class MapController extends Controller
             }
         } else {
             $map = new Map();
-            $map->setDefault();
+            $map->setDefaultForPlace();
         }
 
         return $this->render('view',

@@ -40,6 +40,7 @@ class FocusController extends Controller
     protected function createMap($origin, $destination, $mode) {
         $map = new Map();
         $map->setQueryAndSourceForDirections($origin, $destination, $mode);
-
+        
+        return $map;
     }
 }

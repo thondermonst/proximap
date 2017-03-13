@@ -13,6 +13,7 @@ class BusinessDetailsSearch extends AbstractModel
         $json = file_get_contents($apiUrl);
         
         $obj = json_decode($json);
+
         $businessDetails = new BusinessDetails();
         $businessDetails->name = $obj->result->name;
 
@@ -23,7 +24,13 @@ class BusinessDetailsSearch extends AbstractModel
         $businessDetails->opening_hours = isset($obj->result->opening_hours->weekday_text) ? $obj->result->opening_hours->weekday_text : null;
         $businessDetails->url = $obj->result->url;
         $businessDetails->phone = isset($obj->result->international_phone_number) ? $obj->result->international_phone_number : null;
-        $businessDetails->website = isset($obj->result->website) ? $obj->result->website : null;
+        $businessDetails->website_url = isset($obj->result->website) ? $obj->result->website : null;
+        if(isset($obj->result->website)) {
+            $websiteParts = explode('?', $businessDetails->website_url);
+            $businessDetails->website = $websiteParts[0];
+        } else {
+            $businessDetails->website = null;
+        }
         if(isset($obj->result->photos)) {
             $businessDetails->photos = [];
             $photoSearch = new PhotoSearch();
@@ -35,7 +42,8 @@ class BusinessDetailsSearch extends AbstractModel
             $businessDetails->photos = null;
         }
         $businessDetails->rating = isset($obj->result->rating) ? $obj->result->rating : null;
-
+        $businessDetails->reviews = isset($obj->result->reviews) ? $obj->result->reviews : null;
+        
         return $businessDetails;
     }
 }

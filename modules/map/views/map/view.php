@@ -7,6 +7,7 @@ use yii\helpers\Url;
 
 $this->title = $title;
 ?>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= $map->apiKey; ?>&libraries=places&language=nl_BE"></script>
 <div id="map-container">
     <?php if($reset) : ?>
     <div id="back">
@@ -64,5 +65,14 @@ $this->title = $title;
     <?php endif; ?>
 </div>
 <?php
+$script = <<<JS
+    var autocomplete = new google.maps.places.Autocomplete($("#map-search")[0], {});
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        console.log(place.address_components);
+    });
+JS;
+$this->registerJs($script);
 MapAsset::register($this);
 ?>
