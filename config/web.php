@@ -51,7 +51,10 @@ $config = [
     'modules' => [
         'map' => [
             'class' => 'app\modules\map\Module',
-        ]
+        ],
+        'twitter' => [
+            'class' => 'app\modules\twitter\Module',
+        ],
     ]
 ];
 

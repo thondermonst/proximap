@@ -3,6 +3,7 @@
 namespace app\modules\map\models;
 
 use yii\base\Model;
+use Yii;
 
 class AbstractModel extends Model
 {
@@ -16,6 +17,6 @@ class AbstractModel extends Model
     {
         parent::__construct($config);
 
-        $this->apiKey = '';
+        $this->apiKey = Yii::$app->params['gmapApiKey'];
     }
 }

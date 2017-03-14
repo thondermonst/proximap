@@ -27,19 +27,20 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Proximap',
+        'brandLabel' => 'Tom\'s Tools',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    /*
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/map/map']],
-            ['label' => 'Settings', 'url' => ['/map/map-settings']],
+            ['label' => 'Map', 'url' => ['/map/map/index']],
+            ['label' => 'Twitter', 'url' => ['/twitter/index/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
+            /*
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -52,9 +53,9 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             )
+            */          
         ],
     ]);
-    */
     NavBar::end();
     ?>
 

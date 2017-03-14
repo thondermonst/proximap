@@ -1,7 +1,7 @@
 <?php
 use yii\web\View;
 ?>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?= Yii::$app->params['gmapApiKey']; ?>&callback=initMap"></script>
 <div id="map-container">
     <h1>Test</h1>
     <div id="map"></div>
