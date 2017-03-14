@@ -72,10 +72,27 @@ ul {
     min-height: 350px;
 }
 
+#business-details .row {
+    margin: 5px 0 10px;
+    border-top: #ddd 1px solid;
+}
+
+#openingshours table tr.strong {
+    font-weight: bold;
+}
+
+#openingshours table td {
+    padding: 5px;
+}
+
+#openingshours table td.center {
+    text-align: center;
+}
+
 .review {
     margin: 5px 0;
     padding: 5px 0;
-    border-bottom: #ddd 1px solid;
+    border-top: #ddd 1px solid;
 }
 
 .author {

@@ -5,6 +5,7 @@ namespace app\modules\map\controllers;
 use app\modules\map\models\Map;
 use app\modules\map\models\BusinessDetailsSearch;
 use yii\web\Controller;
+use yii\helpers\Url;
 use Yii;
 
 class FocusController extends Controller
@@ -22,16 +23,20 @@ class FocusController extends Controller
         
         $businessDetailsSearch =  new BusinessDetailsSearch();
         $businessDetails = $businessDetailsSearch->findById($id);
-
-        $session = Yii::$app->getSession();
-        $origin = $session['origin'];
-        $mode = $session['mode'];
-        $map = $this->createMap($origin, $businessDetails, $mode);
+        if(!is_null($businessDetails)) {
+            $session = Yii::$app->getSession();
+            $origin = $session['origin'];
+            $mode = $session['mode'];
+            $map = $this->createMap($origin, $businessDetails, $mode);
+        } else {
+            Yii::$app->session->addFlash('error' , 'Something went wrong.');
+            return $this->redirect(Url::toRoute('map/reset'));
+        }
         
         return $this->render('view', 
             [
-                'title' => $businessDetails->name,
-                'map' => $map,
+                'title' => (!is_null($businessDetails)) ? $businessDetails->name : null,
+                'map' => isset($map) ? $map : null,
                 'businessDetails' => $businessDetails,
             ]
         );

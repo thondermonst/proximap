@@ -6,6 +6,7 @@ use app\modules\map\models\BusinessSearch;
 use app\modules\map\models\Map;
 use app\modules\map\models\PositionSearch;
 use yii\web\Controller;
+use yii\helpers\Url;
 use Yii;
 
 class MapController extends Controller
@@ -39,6 +40,10 @@ class MapController extends Controller
         unset($session['mode']);
 
         return $this->view();
+    }
+
+    public function actionTest() {
+        return $this->render('test');
     }
 
     /**
@@ -79,17 +84,27 @@ class MapController extends Controller
                 $businessSearch = new BusinessSearch();
                 $businesses = $businessSearch->find($position, $mapPost['type'], $mapPost['mode'], $mapPost['radius']);
 
-                //Set in session
-                $session['map'] = $map;
-                $session['origin'] = $position;
-                $session['businesses'] = $businesses;
-                $session['mode'] = $mapPost['mode'];
+                if(!is_null($businesses)) {
+                    //Set in session
+                    $session['map'] = $map;
+                    $session['origin'] = $position;
+                    $session['businesses'] = $businesses;
+                    $session['mode'] = $mapPost['mode'];
 
-                $this->reset = true;
+                    $this->reset = true;
+                } else {
+                    Yii::$app->session->addFlash('error' , 'Something went wrong.');
+                    return $this->redirect(Url::toRoute('map/reset'));
+                }
             }
         } else {
             $map = new Map();
-            $map->setDefaultForPlace();
+            if(isset($session['geolocation_address'])) {
+                $map->search = $session['geolocation_address'];
+                $map->setQueryAndSourceForPlace();
+            } else {
+                $map->setDefaultForPlace();
+            }
         }
 
         return $this->render('view',
@@ -126,5 +141,13 @@ class MapController extends Controller
         $map->setQueryAndSourceForPlace();
         
         return $map;
+    }
+
+    public function actionGetAddress($lat, $long) {
+        $positionSearch = new PositionSearch();
+        $position = $positionSearch->findByCoordinates($lat, $long);
+        $session = Yii::$app->getSession();
+        $session['geolocation_addrss'] = $position->address;
+        return;
     }
 }

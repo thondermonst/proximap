@@ -9,6 +9,22 @@ $this->title = $title;
 ?>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= $map->apiKey; ?>&libraries=places&language=nl_BE"></script>
 <div id="map-container">
+    <?php if (Yii::$app->session->hasFlash('error')): ?>
+        <div class="alert alert-danger alert-dismissible">
+            <?php $flashes= Yii::$app->session->getFlash('error', null, false);
+            foreach($flashes as $key=>$flash){
+                echo '<div class="alert-'.$key.'">'.$flash.'</div>';
+            }?>
+        </div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+        <div class="alert alert-success alert-dismissible">
+            <?php $flashes= Yii::$app->session->getFlash('success', null, false);
+            foreach($flashes as $key=>$flash){
+                echo '<div class="alert-'.$key.'">'.$flash.'</div>';
+            } ?>
+        </div>
+    <?php endif; ?>
     <?php if($reset) : ?>
     <div id="back">
         <a href="<?= Url::toRoute(['map/reset']);?>">

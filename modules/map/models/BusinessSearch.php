@@ -2,9 +2,11 @@
 
 namespace app\modules\map\models;
 
+use yii\helpers\Url;
+use Yii;
+
 class BusinessSearch extends AbstractModel
 {
-
     /**
      * @param Position $position
      * @param string $type
@@ -25,31 +27,42 @@ class BusinessSearch extends AbstractModel
                 break;
         }
         $radius = $radiusInKm * 1000;
-        $apiUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' . $position->latitude . ',' . $position->longitude . '&radius=' . $radius . '&type=' . $type . '&key=' . $this->apiKey;
+        $apiUrl = 'https://maps.googleapis.com/maps/api/place/radarsearch/json?location=' . $position->latitude . ',' . $position->longitude . '&radius=' . $radius . '&type=' . $type . '&key=' . $this->apiKey;
 
         $json = file_get_contents($apiUrl);
 
         $obj = json_decode($json);
 
-        $businesses = [];
-        foreach ($obj->results as $result) {
-            $business = new Business();
-            $business->id = $result->place_id;
-            $business->name = $result->name;
+        if($obj->status == 'OK') {
+            $businesses = [];
+            foreach ($obj->results as $result) {
+                $business = new Business();
+                $business->id = $result->place_id;
+                $businessDetailsSearch = new BusinessDetailsSearch();
+                $businessDetails = $businessDetailsSearch->findById($result->place_id, 'short');
+                if(!is_null($businessDetails)) {
+                    $business->name = $businessDetails->name;
 
-            $positionSearch = new PositionSearch();
-            $businessPosition = $positionSearch->findByCoordinates($result->geometry->location->lat, $result->geometry->location->lng);
+                    $positionSearch = new PositionSearch();
+                    $businessPosition = $positionSearch->findByCoordinates($result->geometry->location->lat, $result->geometry->location->lng);
 
-            $business->address = $businessPosition->address;
-            $business->latitude = $result->geometry->location->lat;
-            $business->longitude = $result->geometry->location->lng;
-            $business->distanceFromOrigin = $this->setDistanceFromOrigin($position, $business, $mode);
-            $businesses[] = $business;
+                    $business->address = $businessPosition->address;
+                    $business->latitude = $result->geometry->location->lat;
+                    $business->longitude = $result->geometry->location->lng;
+                    $business->distanceFromOrigin = $this->setDistanceFromOrigin($position, $business, $mode);
+                    $businesses[] = $business;
+                } else {
+                    return null;
+                }
+            }
+
+            usort($businesses, array($this, "cmp"));
+
+            return $businesses;
         }
 
-        usort($businesses, array($this, "cmp"));
+        return null;
 
-        return $businesses;
     }
 
     /**

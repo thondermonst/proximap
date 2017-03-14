@@ -8,6 +8,22 @@ use yii\helpers\Url;
 $this->title = $title;
 ?>
 <div id="map-container">
+    <?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger alert-dismissible">
+        <?php $flashes= Yii::$app->session->getFlash('error', null, false);
+        foreach($flashes as $key=>$flash){
+            echo '<div class="alert-'.$key.'">'.$flash.'</div>';
+        }?>
+    </div>
+    <?php endif; ?>
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissible">
+        <?php $flashes= Yii::$app->session->getFlash('success', null, false);
+        foreach($flashes as $key=>$flash){
+            echo '<div class="alert-'.$key.'">'.$flash.'</div>';
+        } ?>
+    </div>
+    <?php endif; ?>
     <div id="back">
         <a href="<?= Url::previous();?>">
             <button class="btn btn-primary">
@@ -50,17 +66,112 @@ $this->title = $title;
                 <?php else :  ?>
                     No rating available.
                 <?php endif; ?>
-            </div>            
+            </div>
         </div>
         <div class="row">
             <div id="openingshours" class="col-md-4">
                 <h3>Opening Hours</h3>
                 <?php if(!is_null($businessDetails->opening_hours)) : ?>
-                <ul>
-                <?php foreach($businessDetails->opening_hours as $day) : ?>
-                    <li><?= $day; ?></li>
-                <?php endforeach; ?>
-                </ul>
+                <table>
+                    <tr class="<?= (date("l") == 'Monday') ? 'strong' : ''; ?>">
+                        <td>Monday</td>
+                        <?php if(isset($businessDetails->opening_hours[1])) : ?>
+                            <?php if(count($businessDetails->opening_hours[1]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[1]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[1]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[1]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[1]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[1]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[1]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                                <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Tuesday') ? 'strong' : ''; ?>">
+                        <td>Tuesday</td>
+                        <?php if(isset($businessDetails->opening_hours[2])) : ?>
+                            <?php if(count($businessDetails->opening_hours[2]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[2]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[2]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[2]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[2]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[2]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[2]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Wednesday') ? 'strong' : ''; ?>">
+                        <td>Wednesday</td>
+                        <?php if(isset($businessDetails->opening_hours[3])) : ?>
+                            <?php if(count($businessDetails->opening_hours[3]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[3]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[3]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[3]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[3]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[3]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[3]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Thursday') ? 'strong' : ''; ?>">
+                        <td>Thursday</td>
+                        <?php if(isset($businessDetails->opening_hours[4])) : ?>
+                            <?php if(count($businessDetails->opening_hours[4]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[4]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[4]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[4]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[4]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[4]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[4]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Friday') ? 'strong' : ''; ?>">
+                        <td>Friday</td>
+                        <?php if(isset($businessDetails->opening_hours[5])) : ?>
+                            <?php if(count($businessDetails->opening_hours[5]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[5]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[5]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[5]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[5]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[5]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[5]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Saturday') ? 'strong' : ''; ?>">
+                        <td>Saturday</td>
+                        <?php if(isset($businessDetails->opening_hours[6])) : ?>
+                            <?php if(count($businessDetails->opening_hours[6]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[6]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[6]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[6]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[6]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[6]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[6]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                    <tr class="<?= (date("l") == 'Sunday') ? 'strong' : ''; ?>">
+                        <td>Sunday</td>
+                        <?php if(isset($businessDetails->opening_hours[0])) : ?>
+                            <?php if(count($businessDetails->opening_hours[0]['periods']) > 1) : ?>
+                                <td class="center"><?= $businessDetails->opening_hours[0]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[0]['periods'][0]['close']; ?></td>
+                                <td class="center"><?= $businessDetails->opening_hours[0]['periods'][1]['open'] . ' - ' . $businessDetails->opening_hours[0]['periods'][1]['close']; ?></td>
+                            <?php else : ?>
+                                <td></td>
+                                <td class="center"><?= $businessDetails->opening_hours[0]['periods'][0]['open'] . ' - ' . $businessDetails->opening_hours[0]['periods'][0]['close']; ?></td>
+                            <?php endif; ?>
+                        <?php else : ?>
+                            <td colspan="2" class="center">Closed</td>
+                        <?php endif; ?>
+                    </tr>
+                </table>
                 <?php else : ?>
                 No information available.
                 <?php endif; ?>
