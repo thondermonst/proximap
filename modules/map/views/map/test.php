@@ -20,7 +20,7 @@ $script = <<<JS
                     url: '?r=map/map/get-address',
                     data: {lat: pos.lat, long: pos.lng},
                 }).done(function (data) {
-                    $('#map').html(data);
+                    console.log(data);
                 });
             }, function() {
                 handleLocationError(true);

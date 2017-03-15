@@ -55,6 +55,9 @@ $config = [
         'twitter' => [
             'class' => 'app\modules\twitter\Module',
         ],
+        'quizmaker' => [
+            'class' => 'app\modules\quizmaker\Module',
+        ],
     ]
 ];
 

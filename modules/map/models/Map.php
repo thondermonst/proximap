@@ -53,6 +53,11 @@ class Map extends AbstractModel
      */
     public $width = 996;
 
+    /**
+     * @var boolean
+     */
+    public $geolocation;
+
     public function setDefaultForPlace()
     {
         $this->search = 'Bredabaan 780A Merksem';

@@ -12,6 +12,7 @@ class MapAsset extends AssetBundle
     ];
     public $js = [
         'js/map.js',
+        'js/geolocation.js',
         'js/rating.js',
     ];
     public $depends = [

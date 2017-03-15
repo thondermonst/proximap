@@ -25,7 +25,7 @@ $this->title = $title;
     </div>
     <?php endif; ?>
     <div id="back">
-        <a href="<?= Url::previous();?>">
+        <a href="<?= Url::toRoute(['/map/map']);?>">
             <button class="btn btn-primary">
                 Back to overview
             </button></a>

@@ -62,6 +62,7 @@ class MapController extends Controller
             //overwrite session
             $session = Yii::$app->getSession();
             $session['mapPost'] = $mapPost;
+            $session['geolocation'] = $mapPost['geolocation'];
         } else {
             //Check session
             $session = Yii::$app->getSession();
@@ -75,7 +76,7 @@ class MapController extends Controller
         if(isset($mapPost)) {
             if(!isset($map)) {
                 $map = $this->createMap($mapPost);
-
+                $map->geolocation = $mapPost['geolocation'];
                 //Set position
                 $positionSearch = new PositionSearch();
                 $position = $positionSearch->findByAddress($mapPost['search']);
@@ -100,6 +101,7 @@ class MapController extends Controller
         } else {
             $map = new Map();
             if(isset($session['geolocation_address'])) {
+                $map->geolocation = true;
                 $map->search = $session['geolocation_address'];
                 $map->setQueryAndSourceForPlace();
             } else {
@@ -147,7 +149,13 @@ class MapController extends Controller
         $positionSearch = new PositionSearch();
         $position = $positionSearch->findByCoordinates($lat, $long);
         $session = Yii::$app->getSession();
-        $session['geolocation_addrss'] = $position->address;
-        return;
+        $session['geolocation_address'] = $position->address;
+        unset($session['mapPost']);
+        unset($session['map']);
+        unset($session['origin']);
+        unset($session['businesses']);
+        unset($session['mode']);
+
+        return $this->redirect(Url::toRoute(['/map/map']));
     }
 }

@@ -35,21 +35,28 @@ $this->title = $title;
     <?php endif; ?>
     <h1><?= \yii\helpers\Html::encode($title); ?></h1>
     <?php $form = ActiveForm::begin(); ?>
-    <div id="search">    
-        <div class="form-element col-md-4">
-            <?= $form->field($map, 'search')->textInput(['value' => $map->search]); ?>
+    <div id="search">
+        <div class="row">
+            <div class="form-element col-md-4">
+                <?= $form->field($map, 'search')->textInput(['value' => $map->search]); ?>
+            </div>
+            <div class="form-element col-md-2">
+                <?= $form->field($map, 'type')->dropDownList($types, ['value' => $map->type]); ?>
+            </div>
+            <div class="form-element col-md-2">
+                <?= $form->field($map, 'mode')->dropDownList($modes, ['value' => $map->mode]); ?>
+            </div>
+            <div class="form-element col-md-2">
+                <?= $form->field($map, 'radius')->dropDownList($radii, ['value' => $map->radius]); ?>
+            </div>
+            <div class="form-element col-md-2 search-button-element">
+                <?= Button::widget(["label" => "Search", "options" => ["class" => "btn-primary grid-button search-button"]]); //Html::submitButton('Search') ?>
+            </div>
         </div>
-        <div class="form-element col-md-2">
-            <?= $form->field($map, 'type')->dropDownList($types, ['value' => $map->type]); ?>
-        </div>
-        <div class="form-element col-md-2">
-            <?= $form->field($map, 'mode')->dropDownList($modes, ['value' => $map->mode]); ?>
-        </div>
-        <div class="form-element col-md-2">
-            <?= $form->field($map, 'radius')->dropDownList($radii, ['value' => $map->radius]); ?>
-        </div>
-        <div class="form-element col-md-2 search-button-element">
-            <?= Button::widget(["label" => "Search", "options" => ["class" => "btn-primary grid-button search-button"]]); //Html::submitButton('Search') ?>
+        <div class="row">
+            <div class="form-element col-md-2">
+                <?= $form->field($map, 'geolocation')->checkbox(); ?>
+            </div>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

@@ -38,6 +38,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Map', 'url' => ['/map/map/index']],
             ['label' => 'Twitter', 'url' => ['/twitter/index/index']],
+            ['label' => 'Quizmaker', 'url' => ['/quizmaker/index/index']],
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             /*
